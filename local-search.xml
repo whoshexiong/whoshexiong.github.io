@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>第一篇博客</title>
+    <link href="/2024/12/10/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/"/>
+    <url>/2024/12/10/%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/</url>
+    
+    <content type="html"><![CDATA[<h2 id="第一篇博客"><a href="#第一篇博客" class="headerlink" title="第一篇博客"></a>第一篇博客</h2><p>这是我的第一篇发表在个人博客网站上的博客，我想用它来测试展示图片的功能，并展示我是如何搭建起博客网站的。</p><h3 id="图片测试"><a href="#图片测试" class="headerlink" title="图片测试"></a>图片测试</h3><p>这是我的电脑壁纸：</p><p>希望测试成功</p><h3 id="我搭建网站参考的博客："><a href="#我搭建网站参考的博客：" class="headerlink" title="我搭建网站参考的博客："></a>我搭建网站参考的博客：</h3><p><a href="https://blog.csdn.net/yaorongke/article/details/119089190">GitHub Pages + Hexo搭建个人博客网站，史上最全教程_hexo博客-CSDN博客</a></p><p>其中也碰了壁：</p><p>1、使用leanCloud得用国际版，国内版得备案</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>原创</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>测试文章</title>
     <link href="/2024/12/10/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"/>
     <url>/2024/12/10/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</url>
