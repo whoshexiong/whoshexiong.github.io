@@ -19,22 +19,22 @@
   <meta name="author" content="youlv">
   <meta name="keywords" content="">
   
-    <meta name="description" content="进程一、进程的状态三种基本状态：运行状态，就绪状态，阻塞状态 此外还有创建，结束状态，挂起状态。 在虚拟内存管理的操作系统中，通常会把阻塞状态的进程的物理内存空间换出到硬盘，等需要再次运行的时候，再从硬盘换入到物理内存。这就是挂起状态。 挂起状态可以分为两种： 阻塞挂起状态：进程在外存（硬盘）并等待某个事件的出现； 就绪挂起状态：进程在外存（硬盘），但只要进入内存，即刻立刻运行； 二、进程控制块（">
+    <meta name="description" content="一、caffeine介绍作为Java缓存库，相比于老牌的Guava或是Ehcache，Caffeine在性能上更胜一筹。它的设计重点是提供快速的读写性能，尤其在高并发的场景下表现出色。 1、创建缓存： 1234Cache&lt;String, String&gt; cache &#x3D; Caffeine.newBuilder()    .maximumSize(10_000)    .expireAft">
 <meta property="og:type" content="article">
-<meta property="og:title" content="操作系统-进程与线程">
-<meta property="og:url" content="http://example.com/2025/10/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:title" content="本地缓存caffeine一">
+<meta property="og:url" content="http://example.com/2025/10/05/%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98caffeine%E4%B8%80/index.html">
 <meta property="og:site_name" content="youlv&#39;s blog">
-<meta property="og:description" content="进程一、进程的状态三种基本状态：运行状态，就绪状态，阻塞状态 此外还有创建，结束状态，挂起状态。 在虚拟内存管理的操作系统中，通常会把阻塞状态的进程的物理内存空间换出到硬盘，等需要再次运行的时候，再从硬盘换入到物理内存。这就是挂起状态。 挂起状态可以分为两种： 阻塞挂起状态：进程在外存（硬盘）并等待某个事件的出现； 就绪挂起状态：进程在外存（硬盘），但只要进入内存，即刻立刻运行； 二、进程控制块（">
+<meta property="og:description" content="一、caffeine介绍作为Java缓存库，相比于老牌的Guava或是Ehcache，Caffeine在性能上更胜一筹。它的设计重点是提供快速的读写性能，尤其在高并发的场景下表现出色。 1、创建缓存： 1234Cache&lt;String, String&gt; cache &#x3D; Caffeine.newBuilder()    .maximumSize(10_000)    .expireAft">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-10-04T17:11:25.000Z">
-<meta property="article:modified_time" content="2025-10-04T17:13:39.455Z">
+<meta property="article:published_time" content="2025-10-05T08:08:35.000Z">
+<meta property="article:modified_time" content="2025-10-05T08:09:57.542Z">
 <meta property="article:author" content="youlv">
 <meta property="article:tag" content="知识分享">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>操作系统-进程与线程 - youlv&#39;s blog</title>
+  <title>本地缓存caffeine一 - youlv&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -213,7 +213,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="操作系统-进程与线程"></span>
+            <span id="subtitle" data-typed-text="本地缓存caffeine一"></span>
           
         </div>
 
@@ -224,8 +224,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-10-05 01:11" pubdate>
-          2025年10月5日 凌晨
+        <time datetime="2025-10-05 16:08" pubdate>
+          2025年10月5日 下午
         </time>
       </span>
     
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          765 字
         
       </span>
     
@@ -247,7 +247,7 @@
         
         
         
-          17 分钟
+          7 分钟
         
       </span>
     
@@ -293,66 +293,101 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">操作系统-进程与线程</h1>
+            <h1 id="seo-header">本地缓存caffeine一</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="一、进程的状态"><a href="#一、进程的状态" class="headerlink" title="一、进程的状态"></a>一、进程的状态</h2><p>三种基本状态：<strong>运行状态，就绪状态，阻塞状态</strong></p>
-<p><strong>此外还有创建，结束状态，挂起状态。</strong></p>
-<p>在虚拟内存管理的操作系统中，通常会把阻塞状态的进程的物理内存空间换出到硬盘，等需要再次运行的时候，再从硬盘换入到物理内存。这就是<strong>挂起状态</strong>。</p>
-<p>挂起状态可以分为两种：</p>
-<p>阻塞挂起状态：进程在外存（硬盘）并等待某个事件的出现；</p>
-<p>就绪挂起状态：进程在外存（硬盘），但只要进入内存，即刻立刻运行；</p>
-<h2 id="二、进程控制块（process-control-block，PCB）"><a href="#二、进程控制块（process-control-block，PCB）" class="headerlink" title="二、进程控制块（process control block，PCB）"></a>二、进程控制块（process control block，PCB）</h2><p><strong>描述进程的数据结构。切换进程时，<strong><strong>PCB</strong></strong>还会保存<strong><strong>cpu</strong></strong>状态。</strong></p>
-<h3 id="PCB包含信息："><a href="#PCB包含信息：" class="headerlink" title="PCB包含信息："></a>PCB包含信息：</h3><h4 id="1-、进程描述信息："><a href="#1-、进程描述信息：" class="headerlink" title="1**、进程描述信息："></a><em>1**、进程描述信息：</em></h4><p><strong>进程标识符</strong>：标识各个进程，每个进程都有一个并且唯一的标识符；</p>
-<p><strong>用户标识符</strong>：进程归属的用户，用户标识符主要为共享和保护服务；</p>
-<h4 id="2-、进程控制和管理信息："><a href="#2-、进程控制和管理信息：" class="headerlink" title="2**、进程控制和管理信息："></a><em>2**、进程控制和管理信息：</em></h4><p><strong>进程当前状态</strong>，如 new、ready、running、waiting 或 blocked 等；</p>
-<p><strong>进程优先级</strong>：进程抢占 CPU 时的优先级；</p>
-<h4 id="3-、资源分配清单："><a href="#3-、资源分配清单：" class="headerlink" title="3**、资源分配清单："></a><em>3**、资源分配清单：</em></h4><p><strong>有关内存地址空间或虚拟地址空间的信息</strong>，所打开文件的列表和所使用的 I&#x2F;O 设备信息。</p>
-<h4 id="4、CPU-相关信息："><a href="#4、CPU-相关信息：" class="headerlink" title="4、CPU 相关信息："></a><em>4<strong>、</strong>CPU</em> <em>相关信息：</em></h4><p><strong>CPU 中各个寄存器的值</strong>，当进程被切换时，CPU 的状态信息都会被保存在相应的 PCB 中，以便进程重新执行时，能从断点处继续执行。</p>
-<p>PCB通过链表的方式进行组织，将具有相同状态的pcb链在一起，组成队列。</p>
-<p>比如具有就绪状态的进程们组成就绪队列。</p>
-<h2 id="三、进程控制"><a href="#三、进程控制" class="headerlink" title="三、进程控制"></a>三、进程控制</h2><h3 id="1、进程创建"><a href="#1、进程创建" class="headerlink" title="1、进程创建"></a>1、进程创建</h3><p>允许一个进程创建另一个进程，允许子进程继承父进程拥有的资源。</p>
-<p>为进程申请一块空白pcb，将该pcb插入就绪队列中。</p>
-<h3 id="2、终止进程："><a href="#2、终止进程：" class="headerlink" title="2、终止进程："></a>2、终止进程：</h3><p>3种终止方式，正常结束，异常结束，外界干预</p>
-<p>子进程被终止，它在父进程继承的资源需归还，父进程被终止，它的子进程会被其他进程收养。</p>
-<h3 id="3、阻塞进程："><a href="#3、阻塞进程：" class="headerlink" title="3、阻塞进程："></a>3、阻塞进程：</h3><p>当一个进程需要等待某一事件完成，它可以调用阻塞语句把自己阻塞等待。而一旦被阻塞等待，它只能由另一个进程唤醒。</p>
-<h3 id="4、唤醒进程："><a href="#4、唤醒进程：" class="headerlink" title="4、唤醒进程："></a>4、唤醒进程：</h3><p>其它进程唤醒阻塞的进程</p>
-<h2 id="四、进程上下文切换"><a href="#四、进程上下文切换" class="headerlink" title="四、进程上下文切换"></a>四、进程上下文切换</h2><p>一个进程切换到另一个进程运行，称为<strong>进程的上下文切换</strong></p>
-<p>CPU 寄存器和程序计数是 CPU 在运行任何任务前，所必须依赖的环境，这些环境就叫做 CPU 上下文。</p>
-<h3 id="CPU上下文切换："><a href="#CPU上下文切换：" class="headerlink" title="CPU上下文切换："></a>CPU上下文切换：</h3><p>CPU 上下文切换就是先把前一个任务的 CPU 上下文（CPU 寄存器和程序计数器）保存起来，然后加载新任务的上下文到这些寄存器和程序计数器，最后再跳转到程序计数器所指的新位置，运行新任务。</p>
-<h3 id="进程上下文："><a href="#进程上下文：" class="headerlink" title="进程上下文："></a>进程上下文：</h3><p>进程的上下文切换不仅包含了虚拟内存、栈、全局变量等用户空间的资源，还包括了内核堆栈、寄存器等内核空间的资源。（进程上下文包括CPU上下文）</p>
-<p>通常，会把交换的信息保存在进程的 PCB，当要运行另外一个进程的时候，我们需要从这个进程的 PCB 取出上下文，然后恢复到 CPU 中，这使得这个进程可以继续执行。</p>
-<h1 id="五、进程通信方式"><a href="#五、进程通信方式" class="headerlink" title="五、进程通信方式"></a>五、进程通信方式</h1><p>1、管道</p>
-<p>2、消息队列</p>
-<p>3、共享内存:共享内存的机制，就是拿出一块虚拟地址空间来，映射到相同的物理内存中</p>
-<p>4、信号量</p>
-<p>5、套接字socket</p>
-<p>6、信号</p>
-<h1 id="线程："><a href="#线程：" class="headerlink" title="线程："></a>线程：</h1><h2 id="一、和进程区别"><a href="#一、和进程区别" class="headerlink" title="一、和进程区别"></a>一、和进程区别</h2><p>相比进程优势：1、并发运行 2、共享相同地址空间</p>
-<p>缺点：当进程中的一个线程崩溃，会导致所属进程所有线程崩溃（仅针对C&#x2F;C++)</p>
-<p>各个线程拥有一套独立的寄存器和栈</p>
-<h2 id="二、线程上下文切换"><a href="#二、线程上下文切换" class="headerlink" title="二、线程上下文切换"></a>二、线程上下文切换</h2><p>当两个线程属于同一进程，线程在<strong>上下文切换</strong>只需保存它的私有数据，比如栈和寄存器，它共享的进程的资源是不需要保存的。</p>
-<p>当它们分属不同进程，则切换的过程和进程上下文切换一样。</p>
-<h2 id="三、线程的实现："><a href="#三、线程的实现：" class="headerlink" title="三、线程的实现："></a>三、线程的实现：</h2><p>1、用户线程：用户空间实现的线程</p>
-<p>2、内核线程：由内核管理的线程</p>
-<p>3、轻量级进程：在内核中支持用户线程</p>
-<h3 id="1、用户线程："><a href="#1、用户线程：" class="headerlink" title="1、用户线程："></a>1、用户线程：</h3><p>操作系统只能看见进程的PCB，看不见用户线程控制块TCB，所以操作系统不参与用户线程的线程管理和调度。线程的创建，终止，同步和调度由用户级线程库函数完成。</p>
-<h3 id="2、内核线程："><a href="#2、内核线程：" class="headerlink" title="2、内核线程："></a>2、内核线程：</h3><p>线程由操作系统管理，TCB放在操作系统中，线程的创建，终止，同步和调度由操作系统负责。</p>
-<p>优点：在一个进程中，如果某个内核线程发起系统调用而被阻塞，并不会影响其他内核线程运行</p>
-<h3 id="3、轻量级进程："><a href="#3、轻量级进程：" class="headerlink" title="3、轻量级进程："></a>3、轻量级进程：</h3><p>轻量级进程（Light-weight process，LWP）是内核支持的用户线程，一个进程可有一个或多个 LWP，每个 LWP 是跟内核线程一对一映射的</p>
-<h2 id="四、进程调度："><a href="#四、进程调度：" class="headerlink" title="四、进程调度："></a>四、进程调度：</h2><p>选择一个进程运行这一功能是在操作系统中完成的，通常称为<strong>调度程序（scheduler）</strong>。</p>
-<p>因为线程才是cpu的调度单位，这里的进程实际指进程的主线程，调度主线程就等于调度了进程</p>
-<h3 id="调度算法分类："><a href="#调度算法分类：" class="headerlink" title="调度算法分类："></a>调度算法分类：</h3><p>1、非抢占式：进程运行直到被阻塞或退出</p>
-<p>2、抢占式：只让进程运行某段时间，称为时间片机制，在时间片末端会发生<strong>时钟中断</strong></p>
-<h3 id="调度原则"><a href="#调度原则" class="headerlink" title="调度原则"></a>调度原则</h3><p><strong>CPU利用率：</strong>调度程序应确保CPU是始终匆忙的状态，这可提高CPU的利用率；<br><strong>系统吞吐量：</strong>吞吐量表示的是单位时间内CPU完成进程的数量，长作业的进程会占用较长的CPU资<br>源，因此会降低吞吐量，相反，短作业的进程会提升系统吞吐量；<br><strong>周转时间：</strong>周转时间是进程运行+阻塞时间+等待时间的总和，一个进程的周转时间越小越好；<br><strong>等待时间：</strong>这个等待时间不是阻塞状态的时间，而是进程处于就绪队列的时间，等待的时间越长，用户<br>越不满意；<br><strong>响应时间：</strong>用户提交请求到系统第一次产生响应所花费的时间，在交互式系统中，响应时间是衡量调度<br>算法好坏的主要标准。</p>
-<h3 id="调度算法："><a href="#调度算法：" class="headerlink" title="调度算法："></a>调度算法：</h3><p><strong>1****、非抢占式的先来先服务（First Come First Serve, FCFS）算法</strong></p>
-<p><strong>2****、最短作业优先（Shortest Job First, SJF）调度算法，</strong>优先选择运行时间最短的进程来运行，这有助于提高系统的吞吐量。但可能导致长作业一直不被运行</p>
-<p><strong>3****、高响应比优先 （Highest Response Ratio Next, HRRN）调度算法（要求服务时间不可预知，所以根本无法实现）</strong></p>
-<p><strong>4****、时间片轮转（Round Robin, RR）调度算法。使用最广</strong></p>
-<p><strong>5****、最高优先级（Highest Priority First，HPF）调度算法（设置静态或随运行时间变化的优先级）</strong></p>
-<p><strong>6****、多级反馈队列（Multilevel Feedback Queue）调度算法是「时间片轮转算法」和「最高优先级算法」的综合和发展。</strong>新的进程如果在队列1没运行完，就会进入下一个队列，只有上一个队列为空，下一个队列的进程才会运行</p>
+                <h3 id="一、caffeine介绍"><a href="#一、caffeine介绍" class="headerlink" title="一、caffeine介绍"></a>一、caffeine介绍</h3><p>作为Java缓存库，相比于老牌的Guava或是Ehcache，Caffeine在性能上更胜一筹。它的设计重点是提供快速的读写性能，尤其在高并发的场景下表现出色。</p>
+<p><strong>1、创建缓存：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">Cache&lt;String, String&gt; cache = Caffeine.newBuilder()<br>    .maximumSize(<span class="hljs-number">10_000</span>)<br>    .expireAfterWrite(<span class="hljs-number">5</span>, TimeUnit.MINUTES)<br>    .build();<br></code></pre></td></tr></table></figure>
+
+<p>除了基本的创建和存取操作，Caffeine还提供了丰富的功能，</p>
+<p>比如<strong>统计信息</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java">Cache&lt;String, String&gt; cache = Caffeine.newBuilder()<br>    .maximumSize(<span class="hljs-number">10_000</span>)<br>    .expireAfterAccess(<span class="hljs-number">10</span>, TimeUnit.MINUTES)<br>    .recordStats()<span class="hljs-comment">//开启统计功能</span><br>    .build();<br><br><span class="hljs-comment">// 模拟数据访问</span><br>cache.put(<span class="hljs-string">&quot;键1&quot;</span>, <span class="hljs-string">&quot;值1&quot;</span>);<br><span class="hljs-type">String</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> cache.getIfPresent(<span class="hljs-string">&quot;键1&quot;</span>);<br><br><span class="hljs-comment">// 获取并打印统计信息</span><br><span class="hljs-type">CacheStats</span> <span class="hljs-variable">stats</span> <span class="hljs-operator">=</span> cache.stats();<br>System.out.println(<span class="hljs-string">&quot;命中率：&quot;</span> + stats.hitRate());<br></code></pre></td></tr></table></figure>
+
+<p>、<strong>监听器</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">RemovalListener&lt;String, String&gt; listener = (key, value, cause) -&gt;<br>            System.out.println(<span class="hljs-string">&quot;被移除的键：&quot;</span> + key + <span class="hljs-string">&quot;, 原因：&quot;</span> + cause);<br><br>        Cache&lt;String, String&gt; cache = Caffeine.newBuilder()<br>            .removalListener(listener)<br>            .build();<br><br>        cache.put(<span class="hljs-string">&quot;键1&quot;</span>, <span class="hljs-string">&quot;值1&quot;</span>);<br>        cache.invalidate(<span class="hljs-string">&quot;键1&quot;</span>); <span class="hljs-comment">// 手动移除，触发监听器</span><br></code></pre></td></tr></table></figure>
+
+<p>、<strong>缓存大小控制</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">Cache&lt;String, String&gt; cache = Caffeine.newBuilder()<br>            .maximumWeight(<span class="hljs-number">10000</span>)<br>            .weigher((key, value) -&gt; value.length())<br>            .build();<br><br>        cache.put(<span class="hljs-string">&quot;长文本&quot;</span>, <span class="hljs-string">&quot;这是一段超级超级长的文本...&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>、自动加载、异步处理等等。</p>
+<p><strong>2、策略：</strong></p>
+<p>怎样决定保留或丢弃缓存中的数据？Caffeine采用了一种叫做“Window TinyLFU”（最少最近使用）的策略。</p>
+<p><strong>核心思想</strong>是：如果一个数据最近被频繁访问，那么它在不久的将来也很可能被访问。因此，Caffeine会优先保留这些“热门”数据。</p>
+<h3 id="二、caffeine缓存保留与丢弃策略"><a href="#二、caffeine缓存保留与丢弃策略" class="headerlink" title="二、caffeine缓存保留与丢弃策略"></a>二、caffeine缓存保留与丢弃策略</h3><p>1、Caffeine 的缓存条目会在以下三种情况下被<strong>移除（Evict）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>触发类型</th>
+<th>说明</th>
+<th>常用配置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>时间驱动（TTL &#x2F; TTI）</strong></td>
+<td>缓存条目在一定时间后过期。</td>
+<td><code>expireAfterWrite()</code>、<code>expireAfterAccess()</code></td>
+</tr>
+<tr>
+<td><strong>空间驱动（容量限制）</strong></td>
+<td>缓存超过指定大小后，淘汰“价值最低”的条目。</td>
+<td><code>maximumSize()</code> 或 <code>maximumWeight()</code></td>
+</tr>
+<tr>
+<td><strong>手动驱动（主动失效）</strong></td>
+<td>代码中显式清除或更新缓存。</td>
+<td><code>cache.invalidate(key)</code>、<code>cache.invalidateAll()</code></td>
+</tr>
+</tbody></table>
+<p><strong>2、核心算法：W-TinyLFU</strong></p>
+<p>Caffeine 内部将缓存分为三个区域：</p>
+<table>
+<thead>
+<tr>
+<th>区域</th>
+<th>占比</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Window 区</strong></td>
+<td>1%~20%</td>
+<td>用于存放最近新加入的元素（类似 LRU 的“热身区”）</td>
+</tr>
+<tr>
+<td><strong>Probation 区</strong></td>
+<td>80% 左右</td>
+<td>已使用过，但访问频率不高的元素</td>
+</tr>
+<tr>
+<td><strong>Protected 区</strong></td>
+<td>10% 左右</td>
+<td>高频访问的“热点数据”</td>
+</tr>
+</tbody></table>
+<p>工作流程</p>
+<ol>
+<li><strong>新元素加入</strong> → 放入 Window 区；</li>
+<li><strong>若 Window 区满</strong> → 最旧的元素与新加入的元素会比较访问频率，胜出者进入probation，失败者被淘汰</li>
+<li><strong>访问已有元素</strong>：<ul>
+<li>如果在 Probation 区访问，则提升到 Protected 区；</li>
+<li>Protected 区满了，则将最旧的元素降级到 Probation；</li>
+</ul>
+</li>
+<li><strong>淘汰时选择谁？</strong><ul>
+<li>使用 <strong>TinyLFU</strong> 的统计数据来判断：<ul>
+<li>比较新候选对象与要被淘汰对象的访问频率；</li>
+<li>若候选对象历史访问更频繁，则保留候选对象；</li>
+<li>否则丢弃候选对象。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>这使得缓存既能快速响应“最近访问”的内容，又能稳定保留“高频访问”的热点数据。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000044579389">java - 性能利器Caffeine缓存全面指南 - 宋小黑 - SegmentFault 思否</a></p>
 
                 
               </div>
@@ -377,8 +412,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>操作系统-进程与线程</div>
-      <div>http://example.com/2025/10/05/操作系统-进程与线程/</div>
+      <div>本地缓存caffeine一</div>
+      <div>http://example.com/2025/10/05/本地缓存caffeine一/</div>
     </div>
     <div class="license-meta">
       
@@ -422,18 +457,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/10/05/%E6%96%87%E4%BB%B6%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0%E4%B8%80/" title="文件断点续传一">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">文件断点续传一</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/10/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%AD%98%E5%82%A8%E5%99%A8/" title="操作系统-存储器">
-                        <span class="hidden-mobile">操作系统-存储器</span>
+                      <a href="/2025/10/05/%E6%96%87%E4%BB%B6%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0%E4%B8%80/" title="文件断点续传一">
+                        <span class="hidden-mobile">文件断点续传一</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

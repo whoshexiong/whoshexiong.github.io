@@ -19,22 +19,22 @@
   <meta name="author" content="youlv">
   <meta name="keywords" content="">
   
-    <meta name="description" content="进程一、进程的状态三种基本状态：运行状态，就绪状态，阻塞状态 此外还有创建，结束状态，挂起状态。 在虚拟内存管理的操作系统中，通常会把阻塞状态的进程的物理内存空间换出到硬盘，等需要再次运行的时候，再从硬盘换入到物理内存。这就是挂起状态。 挂起状态可以分为两种： 阻塞挂起状态：进程在外存（硬盘）并等待某个事件的出现； 就绪挂起状态：进程在外存（硬盘），但只要进入内存，即刻立刻运行； 二、进程控制块（">
+    <meta name="description" content="一、文件断点续传设计1、分片：将文件拆分为多个小块（Chunk），前端逐片上传，后端逐片接收。  每个分片一般 2~10MB； 每个分片带上唯一标识； 支持并发上传多个分片，加快速度。  2、上传状态记录： 12345678upload_task (  upload_id VARCHAR(64) PRIMARY KEY,  file_name VARCHAR(255),  total_chunks">
 <meta property="og:type" content="article">
-<meta property="og:title" content="操作系统-进程与线程">
-<meta property="og:url" content="http://example.com/2025/10/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:title" content="文件断点续传一">
+<meta property="og:url" content="http://example.com/2025/10/05/%E6%96%87%E4%BB%B6%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0%E4%B8%80/index.html">
 <meta property="og:site_name" content="youlv&#39;s blog">
-<meta property="og:description" content="进程一、进程的状态三种基本状态：运行状态，就绪状态，阻塞状态 此外还有创建，结束状态，挂起状态。 在虚拟内存管理的操作系统中，通常会把阻塞状态的进程的物理内存空间换出到硬盘，等需要再次运行的时候，再从硬盘换入到物理内存。这就是挂起状态。 挂起状态可以分为两种： 阻塞挂起状态：进程在外存（硬盘）并等待某个事件的出现； 就绪挂起状态：进程在外存（硬盘），但只要进入内存，即刻立刻运行； 二、进程控制块（">
+<meta property="og:description" content="一、文件断点续传设计1、分片：将文件拆分为多个小块（Chunk），前端逐片上传，后端逐片接收。  每个分片一般 2~10MB； 每个分片带上唯一标识； 支持并发上传多个分片，加快速度。  2、上传状态记录： 12345678upload_task (  upload_id VARCHAR(64) PRIMARY KEY,  file_name VARCHAR(255),  total_chunks">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-10-04T17:11:25.000Z">
-<meta property="article:modified_time" content="2025-10-04T17:13:39.455Z">
+<meta property="article:published_time" content="2025-10-05T05:26:16.000Z">
+<meta property="article:modified_time" content="2025-10-05T05:30:38.511Z">
 <meta property="article:author" content="youlv">
 <meta property="article:tag" content="知识分享">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>操作系统-进程与线程 - youlv&#39;s blog</title>
+  <title>文件断点续传一 - youlv&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -213,7 +213,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="操作系统-进程与线程"></span>
+            <span id="subtitle" data-typed-text="文件断点续传一"></span>
           
         </div>
 
@@ -224,8 +224,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-10-05 01:11" pubdate>
-          2025年10月5日 凌晨
+        <time datetime="2025-10-05 13:26" pubdate>
+          2025年10月5日 下午
         </time>
       </span>
     
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2k 字
+          546 字
         
       </span>
     
@@ -247,7 +247,7 @@
         
         
         
-          17 分钟
+          5 分钟
         
       </span>
     
@@ -293,66 +293,116 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">操作系统-进程与线程</h1>
+            <h1 id="seo-header">文件断点续传一</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="一、进程的状态"><a href="#一、进程的状态" class="headerlink" title="一、进程的状态"></a>一、进程的状态</h2><p>三种基本状态：<strong>运行状态，就绪状态，阻塞状态</strong></p>
-<p><strong>此外还有创建，结束状态，挂起状态。</strong></p>
-<p>在虚拟内存管理的操作系统中，通常会把阻塞状态的进程的物理内存空间换出到硬盘，等需要再次运行的时候，再从硬盘换入到物理内存。这就是<strong>挂起状态</strong>。</p>
-<p>挂起状态可以分为两种：</p>
-<p>阻塞挂起状态：进程在外存（硬盘）并等待某个事件的出现；</p>
-<p>就绪挂起状态：进程在外存（硬盘），但只要进入内存，即刻立刻运行；</p>
-<h2 id="二、进程控制块（process-control-block，PCB）"><a href="#二、进程控制块（process-control-block，PCB）" class="headerlink" title="二、进程控制块（process control block，PCB）"></a>二、进程控制块（process control block，PCB）</h2><p><strong>描述进程的数据结构。切换进程时，<strong><strong>PCB</strong></strong>还会保存<strong><strong>cpu</strong></strong>状态。</strong></p>
-<h3 id="PCB包含信息："><a href="#PCB包含信息：" class="headerlink" title="PCB包含信息："></a>PCB包含信息：</h3><h4 id="1-、进程描述信息："><a href="#1-、进程描述信息：" class="headerlink" title="1**、进程描述信息："></a><em>1**、进程描述信息：</em></h4><p><strong>进程标识符</strong>：标识各个进程，每个进程都有一个并且唯一的标识符；</p>
-<p><strong>用户标识符</strong>：进程归属的用户，用户标识符主要为共享和保护服务；</p>
-<h4 id="2-、进程控制和管理信息："><a href="#2-、进程控制和管理信息：" class="headerlink" title="2**、进程控制和管理信息："></a><em>2**、进程控制和管理信息：</em></h4><p><strong>进程当前状态</strong>，如 new、ready、running、waiting 或 blocked 等；</p>
-<p><strong>进程优先级</strong>：进程抢占 CPU 时的优先级；</p>
-<h4 id="3-、资源分配清单："><a href="#3-、资源分配清单：" class="headerlink" title="3**、资源分配清单："></a><em>3**、资源分配清单：</em></h4><p><strong>有关内存地址空间或虚拟地址空间的信息</strong>，所打开文件的列表和所使用的 I&#x2F;O 设备信息。</p>
-<h4 id="4、CPU-相关信息："><a href="#4、CPU-相关信息：" class="headerlink" title="4、CPU 相关信息："></a><em>4<strong>、</strong>CPU</em> <em>相关信息：</em></h4><p><strong>CPU 中各个寄存器的值</strong>，当进程被切换时，CPU 的状态信息都会被保存在相应的 PCB 中，以便进程重新执行时，能从断点处继续执行。</p>
-<p>PCB通过链表的方式进行组织，将具有相同状态的pcb链在一起，组成队列。</p>
-<p>比如具有就绪状态的进程们组成就绪队列。</p>
-<h2 id="三、进程控制"><a href="#三、进程控制" class="headerlink" title="三、进程控制"></a>三、进程控制</h2><h3 id="1、进程创建"><a href="#1、进程创建" class="headerlink" title="1、进程创建"></a>1、进程创建</h3><p>允许一个进程创建另一个进程，允许子进程继承父进程拥有的资源。</p>
-<p>为进程申请一块空白pcb，将该pcb插入就绪队列中。</p>
-<h3 id="2、终止进程："><a href="#2、终止进程：" class="headerlink" title="2、终止进程："></a>2、终止进程：</h3><p>3种终止方式，正常结束，异常结束，外界干预</p>
-<p>子进程被终止，它在父进程继承的资源需归还，父进程被终止，它的子进程会被其他进程收养。</p>
-<h3 id="3、阻塞进程："><a href="#3、阻塞进程：" class="headerlink" title="3、阻塞进程："></a>3、阻塞进程：</h3><p>当一个进程需要等待某一事件完成，它可以调用阻塞语句把自己阻塞等待。而一旦被阻塞等待，它只能由另一个进程唤醒。</p>
-<h3 id="4、唤醒进程："><a href="#4、唤醒进程：" class="headerlink" title="4、唤醒进程："></a>4、唤醒进程：</h3><p>其它进程唤醒阻塞的进程</p>
-<h2 id="四、进程上下文切换"><a href="#四、进程上下文切换" class="headerlink" title="四、进程上下文切换"></a>四、进程上下文切换</h2><p>一个进程切换到另一个进程运行，称为<strong>进程的上下文切换</strong></p>
-<p>CPU 寄存器和程序计数是 CPU 在运行任何任务前，所必须依赖的环境，这些环境就叫做 CPU 上下文。</p>
-<h3 id="CPU上下文切换："><a href="#CPU上下文切换：" class="headerlink" title="CPU上下文切换："></a>CPU上下文切换：</h3><p>CPU 上下文切换就是先把前一个任务的 CPU 上下文（CPU 寄存器和程序计数器）保存起来，然后加载新任务的上下文到这些寄存器和程序计数器，最后再跳转到程序计数器所指的新位置，运行新任务。</p>
-<h3 id="进程上下文："><a href="#进程上下文：" class="headerlink" title="进程上下文："></a>进程上下文：</h3><p>进程的上下文切换不仅包含了虚拟内存、栈、全局变量等用户空间的资源，还包括了内核堆栈、寄存器等内核空间的资源。（进程上下文包括CPU上下文）</p>
-<p>通常，会把交换的信息保存在进程的 PCB，当要运行另外一个进程的时候，我们需要从这个进程的 PCB 取出上下文，然后恢复到 CPU 中，这使得这个进程可以继续执行。</p>
-<h1 id="五、进程通信方式"><a href="#五、进程通信方式" class="headerlink" title="五、进程通信方式"></a>五、进程通信方式</h1><p>1、管道</p>
-<p>2、消息队列</p>
-<p>3、共享内存:共享内存的机制，就是拿出一块虚拟地址空间来，映射到相同的物理内存中</p>
-<p>4、信号量</p>
-<p>5、套接字socket</p>
-<p>6、信号</p>
-<h1 id="线程："><a href="#线程：" class="headerlink" title="线程："></a>线程：</h1><h2 id="一、和进程区别"><a href="#一、和进程区别" class="headerlink" title="一、和进程区别"></a>一、和进程区别</h2><p>相比进程优势：1、并发运行 2、共享相同地址空间</p>
-<p>缺点：当进程中的一个线程崩溃，会导致所属进程所有线程崩溃（仅针对C&#x2F;C++)</p>
-<p>各个线程拥有一套独立的寄存器和栈</p>
-<h2 id="二、线程上下文切换"><a href="#二、线程上下文切换" class="headerlink" title="二、线程上下文切换"></a>二、线程上下文切换</h2><p>当两个线程属于同一进程，线程在<strong>上下文切换</strong>只需保存它的私有数据，比如栈和寄存器，它共享的进程的资源是不需要保存的。</p>
-<p>当它们分属不同进程，则切换的过程和进程上下文切换一样。</p>
-<h2 id="三、线程的实现："><a href="#三、线程的实现：" class="headerlink" title="三、线程的实现："></a>三、线程的实现：</h2><p>1、用户线程：用户空间实现的线程</p>
-<p>2、内核线程：由内核管理的线程</p>
-<p>3、轻量级进程：在内核中支持用户线程</p>
-<h3 id="1、用户线程："><a href="#1、用户线程：" class="headerlink" title="1、用户线程："></a>1、用户线程：</h3><p>操作系统只能看见进程的PCB，看不见用户线程控制块TCB，所以操作系统不参与用户线程的线程管理和调度。线程的创建，终止，同步和调度由用户级线程库函数完成。</p>
-<h3 id="2、内核线程："><a href="#2、内核线程：" class="headerlink" title="2、内核线程："></a>2、内核线程：</h3><p>线程由操作系统管理，TCB放在操作系统中，线程的创建，终止，同步和调度由操作系统负责。</p>
-<p>优点：在一个进程中，如果某个内核线程发起系统调用而被阻塞，并不会影响其他内核线程运行</p>
-<h3 id="3、轻量级进程："><a href="#3、轻量级进程：" class="headerlink" title="3、轻量级进程："></a>3、轻量级进程：</h3><p>轻量级进程（Light-weight process，LWP）是内核支持的用户线程，一个进程可有一个或多个 LWP，每个 LWP 是跟内核线程一对一映射的</p>
-<h2 id="四、进程调度："><a href="#四、进程调度：" class="headerlink" title="四、进程调度："></a>四、进程调度：</h2><p>选择一个进程运行这一功能是在操作系统中完成的，通常称为<strong>调度程序（scheduler）</strong>。</p>
-<p>因为线程才是cpu的调度单位，这里的进程实际指进程的主线程，调度主线程就等于调度了进程</p>
-<h3 id="调度算法分类："><a href="#调度算法分类：" class="headerlink" title="调度算法分类："></a>调度算法分类：</h3><p>1、非抢占式：进程运行直到被阻塞或退出</p>
-<p>2、抢占式：只让进程运行某段时间，称为时间片机制，在时间片末端会发生<strong>时钟中断</strong></p>
-<h3 id="调度原则"><a href="#调度原则" class="headerlink" title="调度原则"></a>调度原则</h3><p><strong>CPU利用率：</strong>调度程序应确保CPU是始终匆忙的状态，这可提高CPU的利用率；<br><strong>系统吞吐量：</strong>吞吐量表示的是单位时间内CPU完成进程的数量，长作业的进程会占用较长的CPU资<br>源，因此会降低吞吐量，相反，短作业的进程会提升系统吞吐量；<br><strong>周转时间：</strong>周转时间是进程运行+阻塞时间+等待时间的总和，一个进程的周转时间越小越好；<br><strong>等待时间：</strong>这个等待时间不是阻塞状态的时间，而是进程处于就绪队列的时间，等待的时间越长，用户<br>越不满意；<br><strong>响应时间：</strong>用户提交请求到系统第一次产生响应所花费的时间，在交互式系统中，响应时间是衡量调度<br>算法好坏的主要标准。</p>
-<h3 id="调度算法："><a href="#调度算法：" class="headerlink" title="调度算法："></a>调度算法：</h3><p><strong>1****、非抢占式的先来先服务（First Come First Serve, FCFS）算法</strong></p>
-<p><strong>2****、最短作业优先（Shortest Job First, SJF）调度算法，</strong>优先选择运行时间最短的进程来运行，这有助于提高系统的吞吐量。但可能导致长作业一直不被运行</p>
-<p><strong>3****、高响应比优先 （Highest Response Ratio Next, HRRN）调度算法（要求服务时间不可预知，所以根本无法实现）</strong></p>
-<p><strong>4****、时间片轮转（Round Robin, RR）调度算法。使用最广</strong></p>
-<p><strong>5****、最高优先级（Highest Priority First，HPF）调度算法（设置静态或随运行时间变化的优先级）</strong></p>
-<p><strong>6****、多级反馈队列（Multilevel Feedback Queue）调度算法是「时间片轮转算法」和「最高优先级算法」的综合和发展。</strong>新的进程如果在队列1没运行完，就会进入下一个队列，只有上一个队列为空，下一个队列的进程才会运行</p>
+                <h3 id="一、文件断点续传设计"><a href="#一、文件断点续传设计" class="headerlink" title="一、文件断点续传设计"></a>一、文件断点续传设计</h3><p><strong>1、分片</strong>：将文件拆分为多个小块（Chunk），前端逐片上传，后端逐片接收。</p>
+<ul>
+<li>每个分片一般 2~10MB；</li>
+<li>每个分片带上唯一标识；</li>
+<li>支持并发上传多个分片，加快速度。</li>
+</ul>
+<p><strong>2、上传状态记录：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql">upload_task (<br>  upload_id <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">64</span>) <span class="hljs-keyword">PRIMARY</span> KEY,<br>  file_name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>),<br>  total_chunks <span class="hljs-type">INT</span>,<br>  uploaded_chunks JSON,<br>  status ENUM(<span class="hljs-string">&#x27;UPLOADING&#x27;</span>,<span class="hljs-string">&#x27;MERGING&#x27;</span>,<span class="hljs-string">&#x27;DONE&#x27;</span>),<br>  create_time DATETIME<br>)<br></code></pre></td></tr></table></figure>
+
+<p><strong>3、正式上传前：</strong></p>
+<p>上传前，前端通过文件 <strong>MD5 或 SHA256</strong> 请求 <code>/upload/check</code> 接口：</p>
+<ul>
+<li>若文件已存在 → 秒传；</li>
+<li>若部分分片存在 → 返回已上传分片索引列表；</li>
+<li>若不存在 → 返回空数组，前端从头上传。</li>
+</ul>
+<p>接口示例：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">GET</span> /upload/check?<span class="hljs-attribute">fileMd5</span>=xxx<br>Response:<br>&#123;<br>  <span class="hljs-string">&quot;exists&quot;</span>: <span class="hljs-literal">false</span>,<br>  <span class="hljs-string">&quot;uploadedChunks&quot;</span>: [0, 1, 2, 5, 6]<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>4、正式上传：</strong></p>
+<p>上传接口（<code>/upload/chunk</code>）接收单个分片：</p>
+<p>请求头：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fortran">Content-<span class="hljs-keyword">Type</span>: multipart/<span class="hljs-keyword">form</span>-<span class="hljs-keyword">data</span><br></code></pre></td></tr></table></figure>
+
+<p>请求参数：</p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>uploadId</td>
+<td>上传任务ID</td>
+</tr>
+<tr>
+<td>chunkIndex</td>
+<td>分片序号</td>
+</tr>
+<tr>
+<td>chunk</td>
+<td>文件分片（分片的内容）</td>
+</tr>
+<tr>
+<td>fileMd5</td>
+<td>文件唯一标识</td>
+</tr>
+</tbody></table>
+<p>服务器逻辑：</p>
+<ol>
+<li>校验 uploadId 是否存在；</li>
+<li>校验分片大小；</li>
+<li>保存到临时目录 <code>/uploads/&#123;uploadId&#125;/&#123;chunkIndex&#125;</code>;</li>
+<li>更新数据库或Redis的上传进度。</li>
+</ol>
+<p><strong>5、上传完毕合并文件</strong>：</p>
+<p>合并分片接口</p>
+<p>前端上传完成所有分片后，调用 <code>/upload/merge</code>：</p>
+<p>后端逻辑：</p>
+<ol>
+<li>校验分片是否齐全；</li>
+<li>按序读取 <code>/uploads/&#123;uploadId&#125;</code> 下的所有分片；</li>
+<li>顺序合并为完整文件；</li>
+<li>计算文件MD5，与客户端校验；</li>
+<li>写入正式存储路径（如OSS、本地、NFS等）；</li>
+<li>清理临时文件与Redis记录。</li>
+</ol>
+<h3 id="二、文件-MD5-或-SHA256"><a href="#二、文件-MD5-或-SHA256" class="headerlink" title="二、文件 MD5 或 SHA256"></a>二、文件 <strong>MD5 或 SHA256</strong></h3><p><strong>文件唯一标识</strong></p>
+<p>它们都是一种<strong>哈希算法（Hash Algorithm）</strong>，<br> 可以把任意长度的文件或数据内容 —— 通过一个算法 —— 转换成一段<strong>固定长度的唯一“指纹”字符串</strong>。</p>
+<p><strong>MD5 vs SHA256 的区别</strong></p>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>MD5</th>
+<th>SHA256</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>输出长度</td>
+<td>128 bit（32位字符串）</td>
+<td>256 bit（64位字符串）</td>
+</tr>
+<tr>
+<td>安全性</td>
+<td>较低（可能出现碰撞）</td>
+<td>较高（目前无实用碰撞）</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>更快</td>
+<td>稍慢但更安全</td>
+</tr>
+<tr>
+<td>常用场景</td>
+<td>文件去重、秒传</td>
+<td>加密认证、签名、文件完整性验证</td>
+</tr>
+</tbody></table>
+<p>在项目中：</p>
+<ul>
+<li>普通上传场景 → <strong>MD5 足够</strong>；</li>
+<li>涉及安全性（如银行、加密系统） → <strong>推荐 SHA256</strong>。</li>
+</ul>
 
                 
               </div>
@@ -377,8 +427,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>操作系统-进程与线程</div>
-      <div>http://example.com/2025/10/05/操作系统-进程与线程/</div>
+      <div>文件断点续传一</div>
+      <div>http://example.com/2025/10/05/文件断点续传一/</div>
     </div>
     <div class="license-meta">
       
@@ -422,9 +472,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/10/05/%E6%96%87%E4%BB%B6%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0%E4%B8%80/" title="文件断点续传一">
+                      <a href="/2025/10/05/%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98caffeine%E4%B8%80/" title="本地缓存caffeine一">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">文件断点续传一</span>
+                        <span class="hidden-mobile">本地缓存caffeine一</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -432,8 +482,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/10/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E5%AD%98%E5%82%A8%E5%99%A8/" title="操作系统-存储器">
-                        <span class="hidden-mobile">操作系统-存储器</span>
+                      <a href="/2025/10/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B/" title="操作系统-进程与线程">
+                        <span class="hidden-mobile">操作系统-进程与线程</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
