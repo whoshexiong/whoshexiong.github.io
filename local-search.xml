@@ -4,6 +4,44 @@
   
   
   <entry>
+    <title>Servlet与MVC</title>
+    <link href="/2025/10/16/Servlet%E4%B8%8EMVC/"/>
+    <url>/2025/10/16/Servlet%E4%B8%8EMVC/</url>
+    
+    <content type="html"><![CDATA[<h3 id="一、servlet"><a href="#一、servlet" class="headerlink" title="一、servlet"></a>一、servlet</h3><p>全称server applet，本文主要讲web后端中servlet与MVC的关系。</p><p><strong>1、与tomcat关系</strong></p><table><thead><tr><th><strong>Tomcat</strong></th><th>是一个java写的 <strong>Web 服务器 + Servlet 容器（Container）</strong> 负责接收 HTTP 请求、管理 Servlet 生命周期、调度线程等</th></tr></thead><tbody><tr><td><strong>Servlet</strong></td><td>是由开发者编写的 <strong>Java 类</strong>，运行在 Tomcat 的 Servlet 容器中 具体处理某个 URL 的请求</td></tr></tbody></table><p><strong>2、你需要告诉 Tomcat：哪个 URL 对应哪个 Servlet。</strong></p><p>1）<strong>注解</strong></p><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-meta">@WebServlet</span>(<span class="hljs-string">&quot;/hello&quot;</span>)<br>public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure><p><strong>2）web.xml 配置（传统方式）</strong></p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">servlet</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>HelloServlet<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-class</span>&gt;</span>com.example.HelloServlet<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-class</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">servlet</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">servlet-mapping</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>HelloServlet<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/hello<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">servlet-mapping</span>&gt;</span><br></code></pre></td></tr></table></figure><p><strong>注意：</strong></p><ul><li><strong>Servlet 实例是单例的</strong>（Tomcat 默认只创建一个实例）</li><li><strong>多个请求共享同一个 Servlet 实例</strong></li><li>因此，<strong>不要在 Servlet 中使用实例变量存储请求数据</strong>，只用局部变量</li></ul><p><strong>3、dispatcherServlet与controller的关系</strong></p><p>在mvc中，一个特别的单例的dispatcherServlet负责接收http请求，并通过url分发到不同的controller</p><ul><li><strong>请求流程</strong>：<code>DispatcherServlet → Controller → Service → Mapper</code></li></ul><p>如果是自定义servlet，则不需要和controller配合。</p><p><strong>4、理解单例dispatcherServlet</strong></p><p>两个线程<strong>同时访问同一个对象实例</strong></p><p>它们“持有”的是<strong>同一个dispatcherServlet对象的引用</strong>，只是在不同的线程栈中执行service()方法。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>知识分享</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>时钟回拨与NTP</title>
+    <link href="/2025/10/06/%E6%97%B6%E9%92%9F%E5%9B%9E%E6%8B%A8%E4%B8%8ENTP/"/>
+    <url>/2025/10/06/%E6%97%B6%E9%92%9F%E5%9B%9E%E6%8B%A8%E4%B8%8ENTP/</url>
+    
+    <content type="html"><![CDATA[<h3 id="一、时钟回拨"><a href="#一、时钟回拨" class="headerlink" title="一、时钟回拨"></a>一、时钟回拨</h3><p>1、介绍</p><table><thead><tr><th>问题</th><th>解决方案</th></tr></thead><tbody><tr><td><strong>什么是时钟回拨？</strong></td><td>系统时间被往回调整，导致时间戳变小</td></tr><tr><td><strong>为什么危险？</strong></td><td>可能生成重复 ID，导致数据错乱</td></tr><tr><td><strong>如何避免？</strong></td><td>1. 等待时间追上（主流）<br>2. 漂移模式（高性能）<br>3. 正确配置 NTP<br>4. 使用成熟框架（如 Leaf）</td></tr><tr><td><strong>最佳实践</strong></td><td><strong>使用美团 Leaf 或百度 UidGenerator，配合 NTP 渐进同步</strong></td></tr></tbody></table><blockquote><p>💡 记住：<strong>不要自己从零实现 Snowflake 用于生产环境！</strong> 使用经过大规模验证的开源方案更安全。</p></blockquote><p>2、<strong>时钟回拨的常见原因</strong></p><table><thead><tr><th>原因</th><th>说明</th></tr></thead><tbody><tr><td><strong>手动修改系统时间</strong></td><td>运维人员误操作</td></tr><tr><td><strong>NTP 时间同步异常</strong></td><td>网络延迟、NTP 服务器故障导致时间跳变</td></tr><tr><td><strong>虚拟机漂移</strong></td><td>云服务器在不同物理机间迁移，时间不同步</td></tr><tr><td><strong>DST（夏令时）切换</strong></td><td>某些地区自动调整时间</td></tr></tbody></table><h3 id="二、NTP介绍"><a href="#二、NTP介绍" class="headerlink" title="二、NTP介绍"></a>二、NTP介绍</h3><p>1、<strong>NTP</strong>（Network Time Protocol，网络时间协议）是互联网上用于<strong>同步计算机系统时钟</strong>的标准协议。</p><p>2、<strong>如何用ntp计算偏移</strong>（当前本地时钟比ntp服务器慢了多少）？</p><ol><li>客户端向 NTP 服务器发送请求，记录发送时间 <code>T1</code>。</li><li>服务器收到请求，记录到达时间 <code>T2</code>。</li><li>服务器回复响应，记录发送时间 <code>T3</code>。</li><li>客户端收到响应，记录接收时间 <code>T4</code>。</li></ol><p>通过这四个时间戳，NTP 可以计算出：</p><ul><li><strong>往返延迟（Delay）</strong>：<code>(T4 - T1) - (T3 - T2)</code> &#x3D; d</li></ul><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs arcade">首先假设往返时间是相等的<br><br><span class="hljs-number">1</span>) 从客户端到服务器的观测偏移<br>当客户端在 T1 发送请求，服务器在 T2 收到。<br><br>如果网络没有延迟，那么 T2 应该等于 T1 + <span class="hljs-built_in">Offset</span>。<br><br>但实际上有延迟（设为 d），所以：<br><br>T2 = T1 + <span class="hljs-built_in">offset</span> + d/<span class="hljs-number">2</span>   ← 假设延迟是双向的，单向延迟为 d/<span class="hljs-number">2</span> -&gt; <span class="hljs-built_in">offset</span> = T2 - T1 - d/<span class="hljs-number">2</span><br><br>同理，<br>T3 + d/<span class="hljs-number">2</span> - <span class="hljs-built_in">offset</span> = T4 -&gt; <span class="hljs-built_in">offset</span> = T3 - T4 + d/<span class="hljs-number">2</span><br><br>相加可得：<br></code></pre></td></tr></table></figure><ul><li><strong>时钟偏移（Offset）</strong>：<code>[(T2 - T1) + (T3 - T4)] / 2</code></li></ul><h3 id="三、优化版snowflake"><a href="#三、优化版snowflake" class="headerlink" title="三、优化版snowflake"></a>三、优化版snowflake</h3><p>1、<strong>什么是漂移模式</strong>（Drift Work Mode）<strong>？</strong></p><p>某些优化版 Snowflake（如百度的 UidGenerator、美团的 Leaf）引入<strong>漂移机制</strong>：</p><ul><li><p>当发生小幅度回拨（如 ≤ 100ms），</p><p>不等待</p><p>，而是：</p><ul><li>使用上次的时间戳继续生成 ID</li><li>用序列号递增填充</li><li>直到当前时间追上，再恢复正常</li></ul></li></ul><p>优点：避免阻塞，提高可用性<br>缺点：实现复杂，需严格控制回拨容忍范围</p><p>2、<strong>使用其他 ID 生成算法作为兜底</strong></p><ul><li>当 Snowflake 不可用时，切换到其他算法：<ul><li>UUID（性能低，但绝对唯一）</li><li>数据库自增 ID（需中心化）</li></ul></li></ul>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>知识分享</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>本地缓存caffeine一</title>
     <link href="/2025/10/05/%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98caffeine%E4%B8%80/"/>
     <url>/2025/10/05/%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98caffeine%E4%B8%80/</url>

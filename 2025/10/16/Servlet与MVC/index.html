@@ -19,22 +19,22 @@
   <meta name="author" content="youlv">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一、caffeine介绍作为Java缓存库，相比于老牌的Guava或是Ehcache，Caffeine在性能上更胜一筹。它的设计重点是提供快速的读写性能，尤其在高并发的场景下表现出色。 1、创建缓存： 1234Cache&lt;String, String&gt; cache &#x3D; Caffeine.newBuilder()    .maximumSize(10_000)    .expireAft">
+    <meta name="description" content="一、servlet全称server applet，本文主要讲web后端中servlet与MVC的关系。 1、与tomcat关系    Tomcat 是一个java写的 Web 服务器 + Servlet 容器（Container） 负责接收 HTTP 请求、管理 Servlet 生命周期、调度线程等    Servlet 是由开发者编写的 Java 类，运行在 Tomcat 的 Servlet 容">
 <meta property="og:type" content="article">
-<meta property="og:title" content="本地缓存caffeine一">
-<meta property="og:url" content="http://example.com/2025/10/05/%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98caffeine%E4%B8%80/index.html">
+<meta property="og:title" content="Servlet与MVC">
+<meta property="og:url" content="http://example.com/2025/10/16/Servlet%E4%B8%8EMVC/index.html">
 <meta property="og:site_name" content="youlv&#39;s blog">
-<meta property="og:description" content="一、caffeine介绍作为Java缓存库，相比于老牌的Guava或是Ehcache，Caffeine在性能上更胜一筹。它的设计重点是提供快速的读写性能，尤其在高并发的场景下表现出色。 1、创建缓存： 1234Cache&lt;String, String&gt; cache &#x3D; Caffeine.newBuilder()    .maximumSize(10_000)    .expireAft">
+<meta property="og:description" content="一、servlet全称server applet，本文主要讲web后端中servlet与MVC的关系。 1、与tomcat关系    Tomcat 是一个java写的 Web 服务器 + Servlet 容器（Container） 负责接收 HTTP 请求、管理 Servlet 生命周期、调度线程等    Servlet 是由开发者编写的 Java 类，运行在 Tomcat 的 Servlet 容">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-10-05T08:08:35.000Z">
-<meta property="article:modified_time" content="2025-10-05T08:09:57.542Z">
+<meta property="article:published_time" content="2025-10-16T08:29:55.000Z">
+<meta property="article:modified_time" content="2025-10-16T08:32:08.811Z">
 <meta property="article:author" content="youlv">
 <meta property="article:tag" content="知识分享">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>本地缓存caffeine一 - youlv&#39;s blog</title>
+  <title>Servlet与MVC - youlv&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -213,7 +213,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="本地缓存caffeine一"></span>
+            <span id="subtitle" data-typed-text="Servlet与MVC"></span>
           
         </div>
 
@@ -224,8 +224,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-10-05 16:08" pubdate>
-          2025年10月5日 下午
+        <time datetime="2025-10-16 16:29" pubdate>
+          2025年10月16日 下午
         </time>
       </span>
     
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          765 字
+          328 字
         
       </span>
     
@@ -247,7 +247,7 @@
         
         
         
-          7 分钟
+          3 分钟
         
       </span>
     
@@ -293,101 +293,47 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">本地缓存caffeine一</h1>
+            <h1 id="seo-header">Servlet与MVC</h1>
             
             
               <div class="markdown-body">
                 
-                <h3 id="一、caffeine介绍"><a href="#一、caffeine介绍" class="headerlink" title="一、caffeine介绍"></a>一、caffeine介绍</h3><p>作为Java缓存库，相比于老牌的Guava或是Ehcache，Caffeine在性能上更胜一筹。它的设计重点是提供快速的读写性能，尤其在高并发的场景下表现出色。</p>
-<p><strong>1、创建缓存：</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">Cache&lt;String, String&gt; cache = Caffeine.newBuilder()<br>    .maximumSize(<span class="hljs-number">10_000</span>)<br>    .expireAfterWrite(<span class="hljs-number">5</span>, TimeUnit.MINUTES)<br>    .build();<br></code></pre></td></tr></table></figure>
-
-<p>除了基本的创建和存取操作，Caffeine还提供了丰富的功能，</p>
-<p>比如<strong>统计信息</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java">Cache&lt;String, String&gt; cache = Caffeine.newBuilder()<br>    .maximumSize(<span class="hljs-number">10_000</span>)<br>    .expireAfterAccess(<span class="hljs-number">10</span>, TimeUnit.MINUTES)<br>    .recordStats()<span class="hljs-comment">//开启统计功能</span><br>    .build();<br><br><span class="hljs-comment">// 模拟数据访问</span><br>cache.put(<span class="hljs-string">&quot;键1&quot;</span>, <span class="hljs-string">&quot;值1&quot;</span>);<br><span class="hljs-type">String</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> cache.getIfPresent(<span class="hljs-string">&quot;键1&quot;</span>);<br><br><span class="hljs-comment">// 获取并打印统计信息</span><br><span class="hljs-type">CacheStats</span> <span class="hljs-variable">stats</span> <span class="hljs-operator">=</span> cache.stats();<br>System.out.println(<span class="hljs-string">&quot;命中率：&quot;</span> + stats.hitRate());<br></code></pre></td></tr></table></figure>
-
-<p>、<strong>监听器</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">RemovalListener&lt;String, String&gt; listener = (key, value, cause) -&gt;<br>            System.out.println(<span class="hljs-string">&quot;被移除的键：&quot;</span> + key + <span class="hljs-string">&quot;, 原因：&quot;</span> + cause);<br><br>        Cache&lt;String, String&gt; cache = Caffeine.newBuilder()<br>            .removalListener(listener)<br>            .build();<br><br>        cache.put(<span class="hljs-string">&quot;键1&quot;</span>, <span class="hljs-string">&quot;值1&quot;</span>);<br>        cache.invalidate(<span class="hljs-string">&quot;键1&quot;</span>); <span class="hljs-comment">// 手动移除，触发监听器</span><br></code></pre></td></tr></table></figure>
-
-<p>、<strong>缓存大小控制</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">Cache&lt;String, String&gt; cache = Caffeine.newBuilder()<br>            .maximumWeight(<span class="hljs-number">10000</span>)<br>            .weigher((key, value) -&gt; value.length())<br>            .build();<br><br>        cache.put(<span class="hljs-string">&quot;长文本&quot;</span>, <span class="hljs-string">&quot;这是一段超级超级长的文本...&quot;</span>);<br></code></pre></td></tr></table></figure>
-
-<p>、自动加载、异步处理等等。</p>
-<p><strong>2、策略：</strong></p>
-<p>怎样决定保留或丢弃缓存中的数据？Caffeine采用了一种叫做“Window TinyLFU”（最少最近使用）的策略。</p>
-<p><strong>核心思想</strong>是：如果一个数据最近被频繁访问，那么它在不久的将来也很可能被访问。因此，Caffeine会优先保留这些“热门”数据。</p>
-<h3 id="二、caffeine缓存保留与丢弃策略"><a href="#二、caffeine缓存保留与丢弃策略" class="headerlink" title="二、caffeine缓存保留与丢弃策略"></a>二、caffeine缓存保留与丢弃策略</h3><p>1、Caffeine 的缓存条目会在以下三种情况下被<strong>移除（Evict）</strong>：</p>
+                <h3 id="一、servlet"><a href="#一、servlet" class="headerlink" title="一、servlet"></a>一、servlet</h3><p>全称server applet，本文主要讲web后端中servlet与MVC的关系。</p>
+<p><strong>1、与tomcat关系</strong></p>
 <table>
 <thead>
 <tr>
-<th>触发类型</th>
-<th>说明</th>
-<th>常用配置</th>
+<th><strong>Tomcat</strong></th>
+<th>是一个java写的 <strong>Web 服务器 + Servlet 容器（Container）</strong> 负责接收 HTTP 请求、管理 Servlet 生命周期、调度线程等</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><strong>时间驱动（TTL &#x2F; TTI）</strong></td>
-<td>缓存条目在一定时间后过期。</td>
-<td><code>expireAfterWrite()</code>、<code>expireAfterAccess()</code></td>
-</tr>
-<tr>
-<td><strong>空间驱动（容量限制）</strong></td>
-<td>缓存超过指定大小后，淘汰“价值最低”的条目。</td>
-<td><code>maximumSize()</code> 或 <code>maximumWeight()</code></td>
-</tr>
-<tr>
-<td><strong>手动驱动（主动失效）</strong></td>
-<td>代码中显式清除或更新缓存。</td>
-<td><code>cache.invalidate(key)</code>、<code>cache.invalidateAll()</code></td>
+<td><strong>Servlet</strong></td>
+<td>是由开发者编写的 <strong>Java 类</strong>，运行在 Tomcat 的 Servlet 容器中 具体处理某个 URL 的请求</td>
 </tr>
 </tbody></table>
-<p><strong>2、核心算法：W-TinyLFU</strong></p>
-<p>Caffeine 内部将缓存分为三个区域：</p>
-<table>
-<thead>
-<tr>
-<th>区域</th>
-<th>占比</th>
-<th>特点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>Window 区</strong></td>
-<td>1%~20%</td>
-<td>用于存放最近新加入的元素（类似 LRU 的“热身区”）</td>
-</tr>
-<tr>
-<td><strong>Probation 区</strong></td>
-<td>80% 左右</td>
-<td>已使用过，但访问频率不高的元素</td>
-</tr>
-<tr>
-<td><strong>Protected 区</strong></td>
-<td>10% 左右</td>
-<td>高频访问的“热点数据”</td>
-</tr>
-</tbody></table>
-<p>工作流程</p>
-<ol>
-<li><strong>新元素加入</strong> → 放入 Window 区；</li>
-<li><strong>若 Window 区满</strong> → 最旧的元素与新加入的元素会比较访问频率，胜出者进入probation，失败者被淘汰</li>
-<li><strong>访问已有元素</strong>：<ul>
-<li>如果在 Probation 区访问，则提升到 Protected 区；</li>
-<li>Protected 区满了，则将最旧的元素降级到 Probation；</li>
+<p><strong>2、你需要告诉 Tomcat：哪个 URL 对应哪个 Servlet。</strong></p>
+<p>1）<strong>注解</strong></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs scala"><span class="hljs-meta">@WebServlet</span>(<span class="hljs-string">&quot;/hello&quot;</span>)<br>public <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>2）web.xml 配置（传统方式）</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">servlet</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>HelloServlet<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-class</span>&gt;</span>com.example.HelloServlet<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-class</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">servlet</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">servlet-mapping</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>HelloServlet<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>/hello<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">servlet-mapping</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong></p>
+<ul>
+<li><strong>Servlet 实例是单例的</strong>（Tomcat 默认只创建一个实例）</li>
+<li><strong>多个请求共享同一个 Servlet 实例</strong></li>
+<li>因此，<strong>不要在 Servlet 中使用实例变量存储请求数据</strong>，只用局部变量</li>
 </ul>
-</li>
-<li><strong>淘汰时选择谁？</strong><ul>
-<li>使用 <strong>TinyLFU</strong> 的统计数据来判断：<ul>
-<li>比较新候选对象与要被淘汰对象的访问频率；</li>
-<li>若候选对象历史访问更频繁，则保留候选对象；</li>
-<li>否则丢弃候选对象。</li>
+<p><strong>3、dispatcherServlet与controller的关系</strong></p>
+<p>在mvc中，一个特别的单例的dispatcherServlet负责接收http请求，并通过url分发到不同的controller</p>
+<ul>
+<li><strong>请求流程</strong>：<code>DispatcherServlet → Controller → Service → Mapper</code></li>
 </ul>
-</li>
-</ul>
-</li>
-</ol>
-<p>这使得缓存既能快速响应“最近访问”的内容，又能稳定保留“高频访问”的热点数据。</p>
-<p>参考：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000044579389">java - 性能利器Caffeine缓存全面指南 - 宋小黑 - SegmentFault 思否</a></p>
+<p>如果是自定义servlet，则不需要和controller配合。</p>
+<p><strong>4、理解单例dispatcherServlet</strong></p>
+<p>两个线程<strong>同时访问同一个对象实例</strong></p>
+<p>它们“持有”的是<strong>同一个dispatcherServlet对象的引用</strong>，只是在不同的线程栈中执行service()方法。</p>
 
                 
               </div>
@@ -412,8 +358,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>本地缓存caffeine一</div>
-      <div>http://example.com/2025/10/05/本地缓存caffeine一/</div>
+      <div>Servlet与MVC</div>
+      <div>http://example.com/2025/10/16/Servlet与MVC/</div>
     </div>
     <div class="license-meta">
       
@@ -425,7 +371,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年10月5日</div>
+          <div>2025年10月16日</div>
         </div>
       
       
@@ -457,18 +403,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/10/06/%E6%97%B6%E9%92%9F%E5%9B%9E%E6%8B%A8%E4%B8%8ENTP/" title="时钟回拨与NTP">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">时钟回拨与NTP</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/10/05/%E6%96%87%E4%BB%B6%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0%E4%B8%80/" title="文件断点续传一">
-                        <span class="hidden-mobile">文件断点续传一</span>
+                      <a href="/2025/10/06/%E6%97%B6%E9%92%9F%E5%9B%9E%E6%8B%A8%E4%B8%8ENTP/" title="时钟回拨与NTP">
+                        <span class="hidden-mobile">时钟回拨与NTP</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
